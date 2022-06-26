@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://pixijs.download/v6.4.2/pixi.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <link rel="icon" href="./img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Floating Oil</title>
+</head>
+
+<script src="./js/bowl.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/particle.js"></script>
+<script src="./js/pointer.js"></script>
+<script src="./js/visual.js"></script>
+<script src="./js/physics.js"></script>
+<script src="./js/index.js"></script>
+
+<script>
+    WebFont.load({
+      google: {
+        families: ['Noto Sans']
+      }
+    });
+</script>
+
+<body>
+    
+    <div id="container">
+    </div>
+    
+    <span id="title"> Floating Oil </span>
+
+    <details id="settings">
+        <summary id="control_title" onclick="toggleSettingMenu();">Settings</summary>
+        <br>
+        <div id="settings_panel">
+          <p class="option_title"> Filters <input type="checkbox" class="check_box" id="toggle_filters" onclick="toggleFilters();" checked></p>
+
+          <p class="option_title"> Bowl Size : <span id="bowl_size"></span> </p>
+          <input type="range" class="sliders" id="bowl_size_slider" min="1" max="3" step="0.1" oninput="bowlSizeChanged(value);">
+        
+          <p class="option_title"> Oil Ratio : <span id="oil_ratio"></span> </p>
+          <input type="range" class="sliders" id="oil_ratio_slider" min="0" max="1" step="0.05" oninput="oilRatioChanged(value);">
+          
+          <p class="option_title"> Viscosity : <span id="viscosity"></span> </p>
+          <input type="range" class="sliders" id="viscosity_slider" min="0" max="1" step="0.05" oninput="viscosityChanged(value);">
+
+          <p class="option_title"> Limit #Particles <input type="checkbox" class="check_box" id="limit_particles" onclick="toggleLimitParticles();" checked></p>
+          <input type="button" class="apply_button" value="Load Changes" onclick="reload();">
+          <input type="button" class="set_to_defaults_button" value="Set to Defaults" onclick="setToDefaults();">
+
+          <p class="fps_counter">FPS : <span id="fps_indicator"></span></p> 
+        </div>
+        
+    </details>
+
+</body>
+
+
+</html>
