@@ -3,7 +3,7 @@ Floating Oil
 Oil - Water Separation Visualizer
 --
 
-###Try now! - https://logictypist.github.io/Floating-Oil/
+Try now! - https://logictypist.github.io/Floating-Oil/
 
 This program visualizes oil floating on water.
 
