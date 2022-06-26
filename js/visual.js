@@ -1,7 +1,7 @@
 class Visual {
     constructor(){
         this.bowl = new Bowl();
-        this.texture = PIXI.Texture.from('../img/particle.png');
+        this.texture = PIXI.Texture.from('./img/particle.png');
         this.particles = [];
         this.pointer = new Pointer(this.particles);
     }
