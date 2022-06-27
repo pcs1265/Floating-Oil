@@ -4,10 +4,6 @@ if (!window.localStorage.getItem('VISCOSITY')){
 
 const VISCOSITY = window.localStorage.getItem('VISCOSITY');
 const FRICTION = 0.8 - (0.2 * (VISCOSITY - 0.5));
-console.log(FRICTION);
-
-const minDist_strong = 4 * PARTICLE_RADIUS;
-const minDist_normal = 2 * PARTICLE_RADIUS;
 
 function simulateFinger_variableType(particles, pointer){
     if(pointer.active){
@@ -46,6 +42,8 @@ function simulateFinger_variableType(particles, pointer){
 
 function simulateRepulsive(particles){
     const particlesLength = particles.length;
+    const minDist_strong = 4 * particles[0].radius;
+    const minDist_normal = 2 * particles[0].radius;
 
     for(let i = 0; i < particlesLength; i++){
         const item = particles[i];

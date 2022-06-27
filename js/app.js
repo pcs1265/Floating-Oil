@@ -7,12 +7,11 @@ class App{
     constructor(){
 
         this.setWebgl();
-        this.visual = new Visual();
+        this.setStageSize();
 
-
+        this.visual = new Visual(this.stageWidth, this.stageHeight, this.stage);
         this.resize();
-
-        this.visual.show(this.stageWidth, this.stageHeight, this.stage);
+        this.setFilters(this.visual.bowlSize);
 
         requestAnimationFrame(this.animate.bind(this));
         window.addEventListener('resize', this.resize.bind(this), false);
@@ -20,6 +19,7 @@ class App{
         this.fpsIndicator = document.getElementById("fps_indicator");
         setInterval(this.showFPS.bind(this), 1000);
     }
+
     setWebgl(){
         this.renderer = new PIXI.Renderer({
             width: document.body.clientWidth,
@@ -35,9 +35,11 @@ class App{
         document.getElementById('container').appendChild(this.renderer.view);
         
         this.stage = new PIXI.Container();
+    }
 
+    setFilters(bowlSize){
         this.blurFfilter = new PIXI.filters.BlurFilter();
-        this.blurFfilter.blur = 15 / BOWL_SIZE;
+        this.blurFfilter.blur = 15 / bowlSize;
         this.blurFfilter.autoFit = true;
 
         const fragSource = `
@@ -72,22 +74,16 @@ class App{
         this.stage.filterArea = this.renderer.screen;
     }
 
-    enableFilters(){
-        
+    setStageSize(){
+        this.stageWidth = document.body.clientWidth;
+        this.stageHeight = document.body.clientHeight;
     }
-
-    disableFilters(){
-        this.stage.filters.removeChildren();
-        this.stage.filterArea = this.renderer.screen;
-    }
-
 
     resize(){
         this.stageWidth = document.body.clientWidth;
         this.stageHeight = document.body.clientHeight;
 
         this.renderer.resize(this.stageWidth, this.stageHeight);
-
         this.visual.resize(this.stageWidth, this.stageHeight);
     }
 
@@ -96,11 +92,6 @@ class App{
         this.visual.animate();
         this.renderer.render(this.stage);
         this.frameCounter++;
-    }
-
-    reset(){
-        this.visual.reset();
-        this.visual.show(this.stageWidth, this.stageHeight, this.stage);
     }
 
     showFPS(){

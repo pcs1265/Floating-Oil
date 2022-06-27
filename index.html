@@ -41,18 +41,18 @@
           <p class="option_title"> Filters <input type="checkbox" class="check_box" id="toggle_filters" onclick="toggleFilters();" checked></p>
 
           <p class="option_title"> Bowl Size : <span id="bowl_size"></span> </p>
-          <input type="range" class="sliders" id="bowl_size_slider" min="1" max="3" step="0.1" oninput="bowlSizeChanged(value);">
+          <input type="range" class="sliders" id="bowl_size_slider" min="0.5" max="1.5" step="0.1" oninput="bowlSizeChanged(value);">
         
           <p class="option_title"> Oil Ratio : <span id="oil_ratio"></span> </p>
           <input type="range" class="sliders" id="oil_ratio_slider" min="0" max="1" step="0.05" oninput="oilRatioChanged(value);">
           
           <p class="option_title"> Viscosity : <span id="viscosity"></span> </p>
           <input type="range" class="sliders" id="viscosity_slider" min="0" max="1" step="0.05" oninput="viscosityChanged(value);">
-
-          <p class="option_title"> Limit #Particles <input type="checkbox" class="check_box" id="limit_particles" onclick="toggleLimitParticles();" checked></p>
+          
           <input type="button" class="apply_button" value="Load Changes" onclick="reload();">
           <input type="button" class="set_to_defaults_button" value="Set to Defaults" onclick="setToDefaults();">
-
+          
+          <p class="particle_counter"># of Particles : <span id="particle_indicator"></span></p> 
           <p class="fps_counter">FPS : <span id="fps_indicator"></span></p> 
         </div>
         

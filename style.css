@@ -146,6 +146,13 @@ body * {
     color: #FFFFFF;
 }
 
+.particle_counter{
+    margin-top: 5%;
+    font-size: large;
+    text-align: left;
+    vertical-align: middle;
+}
+
 .fps_counter{
     margin-top: 5%;
     margin-bottom: 5%;

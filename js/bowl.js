@@ -1,15 +1,11 @@
-if (!window.localStorage.getItem('BOWL_SIZE')){
-    window.localStorage.setItem('BOWL_SIZE', 1);
-}
-if (!window.localStorage.getItem('LIMIT_PARTICLES')){
-    window.localStorage.setItem('LIMIT_PARTICLES', 'T');
+if (!window.localStorage.getItem('LOADED_BOWL_SIZE')){
+    window.localStorage.setItem('LOADED_BOWL_SIZE', 1);
 }
 if (!window.localStorage.getItem('OIL_RATIO')){
     window.localStorage.setItem('OIL_RATIO', 0.25);
 }
-const BOWL_SIZE = window.localStorage.getItem('BOWL_SIZE');
-const LIMIT_PARTICLES = window.localStorage.getItem('LIMIT_PARTICLES');
-const MAX_PARTICLES = LIMIT_PARTICLES == 'T' ? 2500 : Number.MAX_SAFE_INTEGER;
+const LOADED_BOWL_SIZE = window.localStorage.getItem('LOADED_BOWL_SIZE');
+const MAX_PARTICLES = 10000;
 const OIL_RATIO = window.localStorage.getItem('OIL_RATIO');
 
 class Bowl {
@@ -28,7 +24,7 @@ class Bowl {
         
     }
     
-    setup(density, stageWidth, stageHeight){
+    setup(stageWidth, stageHeight){
         this.canvas.width = stageWidth;
         this.canvas.height = stageHeight;
 
@@ -38,6 +34,10 @@ class Bowl {
         this.ctx.fillStyle = `rgba(0,0,255,1)`;
 
         this.radius = Math.min(stageHeight / (3), stageWidth / (3));
+        this.bowlSize = (320 / this.radius) * LOADED_BOWL_SIZE;
+
+        this.density = Math.round(12 / this.bowlSize);
+
         this.centerX = stageWidth / (2);
         this.centerY = stageHeight / (2);
         
@@ -46,7 +46,7 @@ class Bowl {
         this.ctx.stroke();
         this.ctx.fill();
         
-        return this.dotPos(density, stageWidth, stageHeight);
+        return this.dotPos(this.density, stageWidth, stageHeight);
     }
 
     dotPos(density, stageWidth, stageHeight){
@@ -91,6 +91,9 @@ class Bowl {
                 item.type = 0;
             }
         }
+        
+        document.getElementById('particle_indicator').innerHTML = totalParticles;
+
         return particles;
     }
 

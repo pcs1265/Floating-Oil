@@ -1,8 +1,8 @@
 class Pointer{
-    constructor(particles){
+    constructor(particles, bowlSize){
         this.x = 0;
         this.y = 0;
-        this.radius = 25 / BOWL_SIZE;
+        this.radius = 25 / bowlSize;
         this.active = false;
         this.type = WATER;
         this.particles = particles;

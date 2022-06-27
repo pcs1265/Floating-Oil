@@ -1,13 +1,12 @@
 const OIL = 0;
 const WATER = 1;
-const PARTICLE_RADIUS = 10 / BOWL_SIZE;
 
 class Particle {
-    constructor(pos, texture){
+    constructor(pos, texture, bowlSize){
         this.type = pos.type;
 
         this.sprite = new PIXI.Sprite(texture);
-        this.sprite.scale.set(0.5 / BOWL_SIZE);
+        this.sprite.scale.set(0.5 / bowlSize);
         this.sprite.anchor.set(0.5);
         if(this.type == OIL){
             this.sprite.tint = 0xFF0000;
@@ -23,7 +22,7 @@ class Particle {
         this.sprite.y = this.y;
         this.vx = 0;
         this.vy = 0;
-        this.radius = PARTICLE_RADIUS;
+        this.radius = 10 / bowlSize;
 
         
         

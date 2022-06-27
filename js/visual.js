@@ -1,17 +1,17 @@
 class Visual {
-    constructor(){
+    constructor(stageWidth, stageHeight, stage){
         this.bowl = new Bowl();
         this.texture = PIXI.Texture.from('./img/particle.png');
         this.particles = [];
-        this.pointer = new Pointer(this.particles);
-    }
 
-    show(stageWidth, stageHeight, stage){
+        this.particlePos = this.bowl.setup(stageWidth, stageHeight);
+        this.bowlSize = this.bowl.bowlSize;
+        
+        this.pointer = new Pointer(this.particles, this.bowlSize);
+
         if(this.container){
             stage.removeChild(this.container);
         }
-
-        this.particlePos = this.bowl.setup(Math.floor(12 / BOWL_SIZE), stageWidth, stageHeight);
 
         this.container = new PIXI.ParticleContainer(this.particlePos.length);
         stage.addChild(this.container);
@@ -19,12 +19,10 @@ class Visual {
         this.particles.splice(0,this.particles.length);
 
         for(let i = 0; i < this.particlePos.length; i++){
-            const item = new Particle(this.particlePos[i], this.texture);
+            const item = new Particle(this.particlePos[i], this.texture, this.bowlSize);
             this.container.addChild(item.sprite);
             this.particles.push(item);
         }
-        console.log(this.particles.length);
-        
     }
     
     animate(){
@@ -45,7 +43,7 @@ class Visual {
         this.container.removeChildren();
         for(let i = 0; i < this.particlePos.length; i++){
             const item = this.particles[i];
-            item.sprite.scale.set(size);
+            item.sprite.scale.set(size / this.bowlSize);
             this.container.addChild(item.sprite);
         }
     }
@@ -63,6 +61,5 @@ class Visual {
             item.x = item.x - centerX_old + centerX_new;
             item.y = item.y - centerY_old + centerY_new;
         }
-        
     }
 }
