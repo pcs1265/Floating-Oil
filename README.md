@@ -15,6 +15,7 @@ So I made a replica of my soup in this program.
 
 Features
 --
+<<<<<<< HEAD
 ### 1. It works!
 
 You can play with the oil blobs until you get bored.
@@ -28,10 +29,28 @@ You can set something about this simulation such as  bowl size(simulation size),
 ### 4. FPS counter
 You can see FPS(Frames Per Second) of simulation.
 
+=======
+### 1. Quite decent visualization filters
+You can disable these filters if you don't like them. but there will be only red and blue dots.
+
+### 2. Variable simulation variables
+You can set something about this simulation such as  bowl size(simulation size), oil ratio, viscosity.
+
+### 3. Limitable number of particles
+You can limit the number of particles generated in case you accidentally set the bowl size too large.
+(This program is tested for 2200 particles on my laptop and the default limit is 2500.)
+
+Tested system : i7-7700HQ, 16GB RAM, Geforce GTX1060 mobile, Google Chrome 103.0.5060.53
+
+### 4. FPS counter
+You can see FPS(Frames Per Second) of simulation.
+
+>>>>>>> f7bdc06fa140454771d5301974faa943283e0642
 etc
 --
 This program is using PixiJS - the HTML5 creation engine.
 
+<<<<<<< HEAD
 If you set the bowl size to 1, the number of particles will usually be around 2000. (±200)
 
 And This program is tested for 2200 particles on my laptop.
@@ -39,3 +58,6 @@ And This program is tested for 2200 particles on my laptop.
 Tested system : i7-7700HQ, 16GB RAM, Geforce GTX1060 mobile, Google Chrome 103.0.5060.53
 
 I did not test on Safari for iPhone and iPad.
+=======
+I did not test on Safari for iPhone and iPad.
+>>>>>>> f7bdc06fa140454771d5301974faa943283e0642
