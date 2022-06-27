@@ -3,7 +3,7 @@ Floating Oil
 Oil - Water Separation Visualizer
 --
 
-Try now! - https://pcs1265.github.io/Floating-Oil/
+Try it now! - https://pcs1265.github.io/Floating-Oil/
 
 This program visualizes oil floating on water.
 
@@ -32,10 +32,8 @@ etc
 --
 This program is using PixiJS - the HTML5 creation engine.
 
-If you set the bowl size to 1, the number of particles will usually be around 2000. (±200)
-
-And This program is tested for 2200 particles on my laptop.
+And this program was tested running at 60 FPS for 2200 particles on my laptop.
 
 Tested system : i7-7700HQ, 16GB RAM, Geforce GTX1060 mobile, Google Chrome 103.0.5060.53
 
-I did not test on Safari for iPhone and iPad.
+Not tested in Safari for iPhone and iPad.

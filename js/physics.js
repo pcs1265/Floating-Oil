@@ -5,7 +5,7 @@ if (!window.localStorage.getItem('VISCOSITY')){
 const VISCOSITY = window.localStorage.getItem('VISCOSITY');
 const FRICTION = 0.8 - (0.2 * (VISCOSITY - 0.5));
 
-function simulateFinger_variableType(particles, pointer){
+function simulateFinger(particles, pointer){
     if(pointer.active){
         const particlesLength = particles.length;
         for(let i = 0; i < particlesLength ; i++){
@@ -42,8 +42,9 @@ function simulateFinger_variableType(particles, pointer){
 
 function simulateRepulsive(particles){
     const particlesLength = particles.length;
-    const minDist_strong = 4 * particles[0].radius;
-    const minDist_normal = 2 * particles[0].radius;
+    const particleRadius = particles[0].radius;
+    const minDist_strong = 4 * particleRadius;
+    const minDist_normal = 2 * particleRadius;
 
     for(let i = 0; i < particlesLength; i++){
         const item = particles[i];
@@ -59,24 +60,24 @@ function simulateRepulsive(particles){
                     const angle = Math.atan2(dy_between_dots, dx_between_dots);
                     const tx = item2.x + Math.cos(angle) * minDist_strong;
                     const ty = item2.y + Math.sin(angle) * minDist_strong;
-                    const ax = tx - item.x;
-                    const ay = ty - item.y;
-                    item.vx += ax / 5;
-                    item.vy += ay / 5;
-                    item2.vx -= ax / 5;
-                    item2.vy -= ay / 5;
+                    const ax = (tx - item.x) / 5;
+                    const ay = (ty - item.y) / 5;
+                    item.vx += ax;
+                    item.vy += ay;
+                    item2.vx -= ax;
+                    item2.vy -= ay;
                 }
             }else{
                 if(dist_between_dots < minDist_normal){
                     const angle = Math.atan2(dy_between_dots, dx_between_dots);
                     const tx = item2.x + Math.cos(angle) * minDist_normal;
                     const ty = item2.y + Math.sin(angle) * minDist_normal;
-                    const ax = tx - item.x;
-                    const ay = ty - item.y;
-                    item.vx += ax / 5;
-                    item.vy += ay / 5;
-                    item2.vx -= ax / 5;
-                    item2.vy -= ay / 5;
+                    const ax = (tx - item.x) / 5;
+                    const ay = (ty - item.y) / 5;
+                    item.vx += ax;
+                    item.vy += ay;
+                    item2.vx -= ax;
+                    item2.vy -= ay;
                 }
             }
             

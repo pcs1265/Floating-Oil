@@ -27,7 +27,7 @@ class Visual {
     
     animate(){
 
-        simulateFinger_variableType(this.particles, this.pointer);
+        simulateFinger(this.particles, this.pointer);
         simulateRepulsive(this.particles);
         simulateBarrier(this.particles, this.bowl);
         simulateFriction(this.particles);

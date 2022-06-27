@@ -36,12 +36,12 @@
 
     <details id="settings">
         <summary id="control_title" onclick="toggleSettingMenu();">Settings</summary>
-        <br>
+
         <div id="settings_panel">
-          <p class="option_title"> Filters <input type="checkbox" class="check_box" id="toggle_filters" onclick="toggleFilters();" checked></p>
+          <p class="option_title"> <label for="toggle_filters">Filters : </label> <input type="checkbox" class="check_box" id="toggle_filters" onclick="toggleFilters();" checked></p>
 
           <p class="option_title"> Bowl Size : <span id="bowl_size"></span> </p>
-          <input type="range" class="sliders" id="bowl_size_slider" min="0.5" max="1.5" step="0.1" oninput="bowlSizeChanged(value);">
+          <input type="range" class="sliders" id="bowl_size_slider" min="0.5" max="1.5" step="0.05" oninput="bowlSizeChanged(value);">
         
           <p class="option_title"> Oil Ratio : <span id="oil_ratio"></span> </p>
           <input type="range" class="sliders" id="oil_ratio_slider" min="0" max="1" step="0.05" oninput="oilRatioChanged(value);">

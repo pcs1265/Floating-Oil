@@ -1,5 +1,6 @@
-const OIL = 0;
-const WATER = 1;
+//Particle type
+//0 = OIL
+//1 = WATER
 
 class Particle {
     constructor(pos, texture, bowlSize){
@@ -8,7 +9,7 @@ class Particle {
         this.sprite = new PIXI.Sprite(texture);
         this.sprite.scale.set(0.5 / bowlSize);
         this.sprite.anchor.set(0.5);
-        if(this.type == OIL){
+        if(this.type == 0){
             this.sprite.tint = 0xFF0000;
         }else{
             this.sprite.tint = 0x0000FF;

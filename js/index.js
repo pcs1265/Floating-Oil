@@ -11,9 +11,9 @@ window.onload = () => {
     if(OPEN_SETTING_MENU == 'T'){
         document.getElementById('settings').open = true;
     }
-
-    document.getElementById('bowl_size').innerHTML = LOADED_BOWL_SIZE;
-    document.getElementById('bowl_size_slider').value = LOADED_BOWL_SIZE;
+    
+    document.getElementById('bowl_size').innerHTML =BOWL_SIZE;
+    document.getElementById('bowl_size_slider').value = BOWL_SIZE;
     
     document.getElementById('oil_ratio').innerHTML = OIL_RATIO;
     document.getElementById('oil_ratio_slider').value = OIL_RATIO;
@@ -51,7 +51,7 @@ function toggleFilters(){
 
 
 function bowlSizeChanged(value){
-    window.localStorage.setItem('LOADED_BOWL_SIZE', value);
+    window.localStorage.setItem('BOWL_SIZE', value);
     document.getElementById('bowl_size').innerHTML = value;
 }
 
@@ -63,15 +63,6 @@ function oilRatioChanged(value){
 function viscosityChanged(value){
     window.localStorage.setItem('VISCOSITY', value);
     document.getElementById('viscosity').innerHTML = value;
-}
-
-function toggleLimitParticles(){
-    if(window.localStorage.getItem('LIMIT_PARTICLES') == 'T'){
-        window.localStorage.setItem('LIMIT_PARTICLES', 'F');
-    }else{
-        window.localStorage.setItem('LIMIT_PARTICLES', 'T');
-    }
-    
 }
 
 function reload(){

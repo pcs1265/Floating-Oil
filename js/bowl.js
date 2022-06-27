@@ -1,20 +1,16 @@
-if (!window.localStorage.getItem('LOADED_BOWL_SIZE')){
-    window.localStorage.setItem('LOADED_BOWL_SIZE', 1);
+if (!window.localStorage.getItem('BOWL_SIZE')){
+    window.localStorage.setItem('BOWL_SIZE', 1);
 }
 if (!window.localStorage.getItem('OIL_RATIO')){
     window.localStorage.setItem('OIL_RATIO', 0.25);
 }
-const LOADED_BOWL_SIZE = window.localStorage.getItem('LOADED_BOWL_SIZE');
+const BOWL_SIZE = window.localStorage.getItem('BOWL_SIZE');
 const MAX_PARTICLES = 10000;
 const OIL_RATIO = window.localStorage.getItem('OIL_RATIO');
 
 class Bowl {
     constructor(){
         this.canvas = document.createElement("canvas");
-        // this.canvas.style.position = 'absolute';
-        // this.canvas.style.left = '0';
-        // this.canvas.style.top = '0';
-        // document.body.appendChild(this.canvas);
 
         this.ctx = this.canvas.getContext('2d');
 
@@ -34,9 +30,11 @@ class Bowl {
         this.ctx.fillStyle = `rgba(0,0,255,1)`;
 
         this.radius = Math.min(stageHeight / (3), stageWidth / (3));
-        this.bowlSize = (320 / this.radius) * LOADED_BOWL_SIZE;
-
+        this.bowlSize = (320 / this.radius) * BOWL_SIZE;
         this.density = Math.round(12 / this.bowlSize);
+
+        this.radius = this.radius / ((12 / this.bowlSize) / this.density);
+
 
         this.centerX = stageWidth / (2);
         this.centerY = stageHeight / (2);
@@ -64,11 +62,7 @@ class Bowl {
             if(totalParticles > MAX_PARTICLES){
                 break;
             }
-            const slide = (i % 2) == 0;
             width = 0;
-            if (slide == 1) {
-                width += 6;
-            }
             for(width; width < stageWidth; width += density){
                 pixel = imageData[((width + (height * stageWidth)) * 4) - 2 ];
                 if (pixel !=0 &&

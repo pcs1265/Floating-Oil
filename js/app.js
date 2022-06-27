@@ -15,6 +15,7 @@ class App{
 
         requestAnimationFrame(this.animate.bind(this));
         window.addEventListener('resize', this.resize.bind(this), false);
+        
         this.frameCounter = 0;
         this.fpsIndicator = document.getElementById("fps_indicator");
         setInterval(this.showFPS.bind(this), 1000);
@@ -55,8 +56,6 @@ class App{
                     gl_FragColor = vec4(vec3(0.9, 0.5, 0.0), 1);
                 }else if(color.b > thresholdB){
                     gl_FragColor = vec4(vec3(0.0, 0.3, 0.5), 1);
-                }else{
-                    gl_FragColor = vec4(vec3(0.0), 0.0);
                 }
             }
         `;

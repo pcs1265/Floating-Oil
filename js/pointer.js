@@ -4,7 +4,7 @@ class Pointer{
         this.y = 0;
         this.radius = 25 / bowlSize;
         this.active = false;
-        this.type = WATER;
+        this.type = 1;
         this.particles = particles;
 
         document.addEventListener('pointermove', this.onPointerMove.bind(this), false);
