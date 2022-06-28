@@ -5,9 +5,9 @@ class Visual {
         this.particles = [];
 
         this.particlePos = this.bowl.setup(stageWidth, stageHeight);
-        this.bowlSize = this.bowl.bowlSize;
+        this.density = this.bowl.density;
         
-        this.pointer = new Pointer(this.particles, this.bowlSize);
+        this.pointer = new Pointer(this.particles, this.density);
 
         if(this.container){
             stage.removeChild(this.container);
@@ -19,7 +19,7 @@ class Visual {
         this.particles.splice(0,this.particles.length);
 
         for(let i = 0; i < this.particlePos.length; i++){
-            const item = new Particle(this.particlePos[i], this.texture, this.bowlSize);
+            const item = new Particle(this.particlePos[i], this.texture, this.density);
             this.container.addChild(item.sprite);
             this.particles.push(item);
         }
@@ -43,7 +43,7 @@ class Visual {
         this.container.removeChildren();
         for(let i = 0; i < this.particlePos.length; i++){
             const item = this.particles[i];
-            item.sprite.scale.set(size / this.bowlSize);
+            item.sprite.scale.set(size / this.density);
             this.container.addChild(item.sprite);
         }
     }

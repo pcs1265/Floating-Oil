@@ -11,7 +11,7 @@ class App{
 
         this.visual = new Visual(this.stageWidth, this.stageHeight, this.stage);
         this.resize();
-        this.setFilters(this.visual.bowlSize);
+        this.setFilters(this.visual.density);
 
         requestAnimationFrame(this.animate.bind(this));
         window.addEventListener('resize', this.resize.bind(this), false);
@@ -38,9 +38,9 @@ class App{
         this.stage = new PIXI.Container();
     }
 
-    setFilters(bowlSize){
+    setFilters(density){
         this.blurFfilter = new PIXI.filters.BlurFilter();
-        this.blurFfilter.blur = 15 / bowlSize;
+        this.blurFfilter.blur = 15 / density;
         this.blurFfilter.autoFit = true;
 
         const fragSource = `

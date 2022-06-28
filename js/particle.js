@@ -3,11 +3,11 @@
 //1 = WATER
 
 class Particle {
-    constructor(pos, texture, bowlSize){
+    constructor(pos, texture, density){
         this.type = pos.type;
 
         this.sprite = new PIXI.Sprite(texture);
-        this.sprite.scale.set(0.5 / bowlSize);
+        this.sprite.scale.set(0.5 / density);
         this.sprite.anchor.set(0.5);
         if(this.type == 0){
             this.sprite.tint = 0xFF0000;
@@ -23,7 +23,7 @@ class Particle {
         this.sprite.y = this.y;
         this.vx = 0;
         this.vy = 0;
-        this.radius = 10 / bowlSize;
+        this.radius = 10 / density;
 
         
         

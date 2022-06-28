@@ -10,9 +10,7 @@ const OIL_RATIO = window.localStorage.getItem('OIL_RATIO');
 
 class Bowl {
     constructor(){
-        this.canvas = document.createElement("canvas");
 
-        this.ctx = this.canvas.getContext('2d');
 
         this.radius;
         this.centerX;
@@ -21,54 +19,34 @@ class Bowl {
     }
     
     setup(stageWidth, stageHeight){
-        this.canvas.width = stageWidth;
-        this.canvas.height = stageHeight;
-
-        this.ctx.clearRect(0,0,stageWidth, stageHeight);
-
-        this.ctx.strokeStyle = `rgba(0,0,255,1)`;
-        this.ctx.fillStyle = `rgba(0,0,255,1)`;
 
         this.radius = Math.min(stageHeight / (3), stageWidth / (3));
-        this.bowlSize = (320 / this.radius) * BOWL_SIZE;
-        this.density = Math.round(12 / this.bowlSize);
-
-        this.radius = this.radius / ((12 / this.bowlSize) / this.density);
-
+        this.density = (320 / this.radius) * BOWL_SIZE;
+        this.particleGap = 12 / this.density;
 
         this.centerX = stageWidth / (2);
         this.centerY = stageHeight / (2);
         
-        this.ctx.beginPath();
-        this.ctx.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2);
-        this.ctx.stroke();
-        this.ctx.fill();
-        
-        return this.dotPos(this.density, stageWidth, stageHeight);
+        return this.dotPos(this.particleGap);
     }
 
-    dotPos(density, stageWidth, stageHeight){
-        const imageData = this.ctx.getImageData(
-            0,0,
-            stageWidth, stageHeight
-        ).data;
-        
+    dotPos(density){
+        const lowBoundX = this.radius - this.centerX;
+        const highBoundX = this.radius + this.centerX;
+        const lowBoundY = this.radius - this.centerY;
+        const highBoundY = this.radius + this.centerY;
+
         const particles = [];
-        let i = 0;
         let totalParticles = 0;
-        let width = 0;
-        let pixel;
-        for(let height = 0; height < stageHeight; height += density){
+        for(let height = lowBoundY; height < highBoundY; height += density){
             if(totalParticles > MAX_PARTICLES){
                 break;
             }
-            width = 0;
-            for(width; width < stageWidth; width += density){
-                pixel = imageData[((width + (height * stageWidth)) * 4) - 2 ];
-                if (pixel !=0 &&
-                    width > 0 && width < stageWidth &&
-                    height > 0 && height < stageHeight)
-                {
+            for(let width = lowBoundX; width < highBoundX; width += density){
+                const dx = this.centerX - width;
+                const dy = this.centerY - height;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist <= this.radius){
                     particles.push({
                         x : width,
                         y : height,
@@ -77,7 +55,6 @@ class Bowl {
                     totalParticles++;
                 }
             }
-            ++i;
         }
         for(let i = 0; i < particles.length; i++){
             const item = particles[i];
