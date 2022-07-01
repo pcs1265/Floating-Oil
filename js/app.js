@@ -1,95 +1,78 @@
-if (!window.localStorage.getItem('FILTERS_ENABLED')){
-    window.localStorage.setItem('FILTERS_ENABLED', 'T');
-}
-const FILTERS_ENABLED = window.localStorage.getItem('FILTERS_ENABLED');
-
 class App{
     constructor(){
+        if (!window.localStorage.getItem('FILTERS_ENABLED')){
+            window.localStorage.setItem('FILTERS_ENABLED', 'T');
+        }
+        if (!window.localStorage.getItem('VISCOSITY')){
+            window.localStorage.setItem('VISCOSITY', 0.5);
+        }
+        if (!window.localStorage.getItem('BOWL_SIZE')){
+            window.localStorage.setItem('BOWL_SIZE', 1);
+        }
+        if (!window.localStorage.getItem('OIL_RATIO')){
+            window.localStorage.setItem('OIL_RATIO', 0.25);
+        }
+        if(window.localStorage.getItem('FILTERS_ENABLED') == 'T'){
+            this.filtersEnabled = true;
+        }else{
+            this.filtersEnabled = false;    
+        }
 
-        this.setWebgl();
-        this.setStageSize();
+        this.bowlSize = parseFloat(window.localStorage.getItem('BOWL_SIZE'));
+        this.oilRatio = parseFloat(window.localStorage.getItem('OIL_RATIO'));
+        this.viscosity = parseFloat(window.localStorage.getItem('VISCOSITY'));
+        this.friction = 0.8 - (0.2 * (this.viscosity - 0.5));
 
-        this.visual = new Visual(this.stageWidth, this.stageHeight, this.stage);
-        this.resize();
-        this.setFilters(this.visual.density);
+        this.stageWidth = document.body.clientWidth;
+        this.stageHeight = document.body.clientHeight;
+        
+        this.texture = PIXI.Texture.from('./img/particle.png');
+        this.bowl = new Bowl(this.texture);
+        this.particles = this.bowl.setup(this.stageWidth, this.stageHeight, this.bowlSize, this.oilRatio);
+        this.density = this.bowl.density;
 
-        requestAnimationFrame(this.animate.bind(this));
+        this.visual = new Visual(this.stageWidth, this.stageHeight, this.bowl);
+        this.pointer = new Pointer(this.particles, this.density);
+
+        if(this.filtersEnabled){
+            this.visual.enableFilters();
+        }else{
+            this.visual.disableFilters();
+        }
+
+        this.animate();
         window.addEventListener('resize', this.resize.bind(this), false);
         
         this.frameCounter = 0;
         this.fpsIndicator = document.getElementById("fps_indicator");
         setInterval(this.showFPS.bind(this), 1000);
+
     }
 
-    setWebgl(){
-        this.renderer = new PIXI.Renderer({
-            width: document.body.clientWidth,
-            height: document.body.clientHeight,
-            antialias: true,
-            transparent: false,
-            resolution: window.devicePixelRatio,
-            audoDensity: true,
-            powerPreference: "high-performance",
-            backgroundColor: 0x202020,
-        });
-        this.renderer.view.id = 'stage';
-        document.getElementById('container').appendChild(this.renderer.view);
-        
-        this.stage = new PIXI.Container();
+    
+    enableFilters(){
+        this.visual.enableFilters();
+        this.filtersEnabled = true;
     }
-
-    setFilters(density){
-        this.blurFfilter = new PIXI.filters.BlurFilter();
-        this.blurFfilter.blur = 15 / density;
-        this.blurFfilter.autoFit = true;
-
-        const fragSource = `
-            precision mediump float;
-            varying vec2 vTextureCoord;
-            uniform sampler2D uSampler;
-            uniform float thresholdR;
-            uniform float thresholdB;
-
-            void main(void){
-                vec4 color = texture2D(uSampler, vTextureCoord);
-                if(color.r > thresholdR){
-                    gl_FragColor = vec4(vec3(0.9, 0.5, 0.0), 1);
-                }else if(color.b > thresholdB){
-                    gl_FragColor = vec4(vec3(0.0, 0.3, 0.5), 1);
-                }
-            }
-        `;
-
-        const uniformsData = {
-            thresholdR: 0.2,
-            thresholdB: 0.2,
-        };
-
-        this.thresholdFilter = new PIXI.Filter(null, fragSource, uniformsData);
-
-        this.enabledFilters = [this.blurFfilter, this.thresholdFilter];
-
-        this.stage.filters = this.enabledFilters;
-        this.stage.filterArea = this.renderer.screen;
+    
+    disableFilters(){
+        this.visual.disableFilters();
+        this.filtersEnabled = false;
     }
-
-    setStageSize(){
-        this.stageWidth = document.body.clientWidth;
-        this.stageHeight = document.body.clientHeight;
-    }
+    
 
     resize(){
         this.stageWidth = document.body.clientWidth;
         this.stageHeight = document.body.clientHeight;
 
-        this.renderer.resize(this.stageWidth, this.stageHeight);
         this.visual.resize(this.stageWidth, this.stageHeight);
+        this.bowl.resize(this.stageWidth, this.stageHeight);
     }
 
-    animate(t) {
+    animate(){
         requestAnimationFrame(this.animate.bind(this));
-        this.visual.animate();
-        this.renderer.render(this.stage);
+        this.bowl.simulateAll(this.pointer, this.friction);
+        this.visual.draw();
         this.frameCounter++;
     }
 
@@ -98,5 +81,18 @@ class App{
         this.frameCounter = 0;
     }
 
+    applyChanges(){
+        this.friction = 0.8 - (0.2 * (this.viscosity - 0.5));
+        this.bowl.setup(this.stageWidth, this.stageHeight, this.bowlSize, this.oilRatio);
+        this.density = this.bowl.density;
+        this.pointer.reset(this.density);
+        this.visual.reset(this.density);
 
+        if(this.filtersEnabled){
+            this.visual.enableFilters();
+        }else{
+            this.visual.disableFilters();
+        }
+
+    }
 }

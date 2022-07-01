@@ -1,25 +1,22 @@
 window.onload = () => {
-    app = new App();
+    this.app = new App();
 
-    if(FILTERS_ENABLED == 'F'){
+    if(!app.filtersEnabled){
         document.getElementById('toggle_filters').checked = false;
-        this.app.stage.filters = [];
-        window.localStorage.setItem('FILTERS_ENABLED', 'F');
-        this.app.visual.setParticleSize(0.1);
     }
 
     if(OPEN_SETTING_MENU == 'T'){
         document.getElementById('settings').open = true;
     }
     
-    document.getElementById('bowl_size').innerHTML =BOWL_SIZE;
-    document.getElementById('bowl_size_slider').value = BOWL_SIZE;
+    document.getElementById('bowl_size').innerHTML = this.app.bowlSize;
+    document.getElementById('bowl_size_slider').value = this.app.bowlSize;
     
-    document.getElementById('oil_ratio').innerHTML = OIL_RATIO;
-    document.getElementById('oil_ratio_slider').value = OIL_RATIO;
+    document.getElementById('oil_ratio').innerHTML = this.app.oilRatio;
+    document.getElementById('oil_ratio_slider').value = this.app.oilRatio;
 
-    document.getElementById('viscosity').innerHTML = VISCOSITY;
-    document.getElementById('viscosity_slider').value = VISCOSITY;
+    document.getElementById('viscosity').innerHTML = this.app.viscosity;
+    document.getElementById('viscosity_slider').value = this.app.viscosity;
     
 }
 
@@ -37,36 +34,41 @@ function toggleSettingMenu(){
 }
 
 function toggleFilters(){
-    if(window.localStorage.getItem('FILTERS_ENABLED') == 'T'){
-        this.app.stage.filters = [];
+    if(this.app.filtersEnabled){
         window.localStorage.setItem('FILTERS_ENABLED', 'F');
-        this.app.visual.setParticleSize(0.1);
-
+        this.app.disableFilters();
     }else{
-        this.app.stage.filters = this.app.enabledFilters;
         window.localStorage.setItem('FILTERS_ENABLED', 'T');
-        this.app.visual.setParticleSize(0.5);
+        this.app.enableFilters();
     }
 }
 
+function applyChanges(){
+    app.bowlSize = parseFloat(document.getElementById('bowl_size_slider').value);
+    document.getElementById('bowl_size').innerHTML = this.app.bowlSize;
+    window.localStorage.setItem('BOWL_SIZE', this.app.bowlSize);
+    
+    app.oilRatio = parseFloat(document.getElementById('oil_ratio_slider').value);
+    document.getElementById('oil_ratio').innerHTML = this.app.oilRatio;
+    window.localStorage.setItem('OIL_RATIO', this.app.oilRatio);
+
+    app.viscosity = parseFloat(document.getElementById('viscosity_slider').value);
+    document.getElementById('viscosity').innerHTML = this.app.viscosity;
+    window.localStorage.setItem('VISCOSITY', this.app.viscosity);
+
+    app.applyChanges();
+}
 
 function bowlSizeChanged(value){
-    window.localStorage.setItem('BOWL_SIZE', value);
     document.getElementById('bowl_size').innerHTML = value;
 }
 
 function oilRatioChanged(value){
-    window.localStorage.setItem('OIL_RATIO', value);
     document.getElementById('oil_ratio').innerHTML = value;
 }
 
 function viscosityChanged(value){
-    window.localStorage.setItem('VISCOSITY', value);
     document.getElementById('viscosity').innerHTML = value;
-}
-
-function reload(){
-    location.reload();
 }
 
 function setToDefaults(){

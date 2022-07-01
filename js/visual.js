@@ -1,47 +1,99 @@
 class Visual {
-    constructor(stageWidth, stageHeight, stage){
-        this.bowl = new Bowl();
-        this.texture = PIXI.Texture.from('./img/particle.png');
-        this.particles = [];
+    constructor(stageWidth, stageHeight, bowl){
+        this.stageWidth = stageWidth;
+        this.stageHeight = stageHeight;
+        this.particles = bowl.particles;
+        this.density = bowl.density;
 
-        this.particlePos = this.bowl.setup(stageWidth, stageHeight);
-        this.density = this.bowl.density;
+        this.setWebgl();
+        this.buildFilters();
         
-        this.pointer = new Pointer(this.particles, this.density);
-
         if(this.container){
-            stage.removeChild(this.container);
+            this.stage.removeChild(this.container);
         }
 
-        this.container = new PIXI.ParticleContainer(this.particlePos.length);
-        stage.addChild(this.container);
+        this.container = new PIXI.ParticleContainer({autoResize : true});
+        this.stage.addChild(this.container);
 
-        this.particles.splice(0,this.particles.length);
-
-        for(let i = 0; i < this.particlePos.length; i++){
-            const item = new Particle(this.particlePos[i], this.texture, this.density);
+        for(let i = 0; i < this.particles.length; i++){
+            const item = this.particles[i];
             this.container.addChild(item.sprite);
-            this.particles.push(item);
         }
     }
+
+    setWebgl(){
+        this.renderer = new PIXI.Renderer({
+            width: document.body.clientWidth,
+            height: document.body.clientHeight,
+            antialias: true,
+            transparent: false,
+            resolution: window.devicePixelRatio * 2,
+            autoDensity: true,
+            powerPreference: "high-performance",
+            backgroundColor: 0x202020,
+        });
+
+        this.renderer.view.id = 'stage';
+        document.getElementById('container').appendChild(this.renderer.view);
+        
+        this.stage = new PIXI.Container();
+    }
+
+    buildFilters(){
+        this.blurFfilter = new PIXI.filters.BlurFilter();
+        this.blurFfilter.blur = 15 / this.density;
+        this.blurFfilter.autoFit = true;
+
+        const fragSource = `
+            precision mediump float;
+            varying vec2 vTextureCoord;
+            uniform sampler2D uSampler;
+            uniform float thresholdR;
+            uniform float thresholdB;
+
+            void main(void){
+                vec4 color = texture2D(uSampler, vTextureCoord);
+                if(color.r > thresholdR){
+                    gl_FragColor = vec4(vec3(0.9, 0.5, 0.0), 1);
+                }else if(color.b > thresholdB){
+                    gl_FragColor = vec4(vec3(0.0, 0.3, 0.5), 1);
+                }
+            }
+        `;
+
+        const uniformsData = {
+            thresholdR: 0.2,
+            thresholdB: 0.2,
+        };
+
+        this.thresholdFilter = new PIXI.Filter(null, fragSource, uniformsData);
+        this.stage.filterArea = this.renderer.screen;
+    }
+
+    enableFilters(){
+        this.stage.filters = [this.blurFfilter, this.thresholdFilter];
+        this.setParticleSize(0.5);
+        this.filtersEnabled = true;
+    }
     
-    animate(){
+    disableFilters(){
+        this.stage.filters = null;
+        this.setParticleSize(0.1);
+        this.filtersEnabled = false;
+    }
 
-        simulateFinger(this.particles, this.pointer);
-        simulateRepulsive(this.particles);
-        simulateBarrier(this.particles, this.bowl);
-        simulateFriction(this.particles);
-
+    draw(){
+        
         for(let i = 0; i< this.particles.length; i++){
             const item = this.particles[i];
             item.draw();
         }
+        this.renderer.render(this.stage);
     }
-
 
     setParticleSize(size){
         this.container.removeChildren();
-        for(let i = 0; i < this.particlePos.length; i++){
+        for(let i = 0; i < this.particles.length; i++){
             const item = this.particles[i];
             item.sprite.scale.set(size / this.density);
             this.container.addChild(item.sprite);
@@ -49,17 +101,23 @@ class Visual {
     }
 
     resize(stageWidth, stageHeight){
-        const centerX_old = this.bowl.centerX;
-        const centerY_old = this.bowl.centerY;
-        const centerX_new = stageWidth / 2;
-        const centerY_new = stageHeight / 2;
-        this.bowl.centerX = centerX_new;
-        this.bowl.centerY = centerY_new;
+        this.stageWidth = stageWidth;
+        this.stageHeight = stageHeight;
 
-        for(let i = 0; i< this.particles.length; i++){
+        this.renderer.resize(this.stageWidth, this.stageHeight);
+    }
+
+
+    reset(density){
+        this.density = density;
+
+        this.blurFfilter.blur = 15 / this.density;
+
+        this.container.removeChildren();
+        for(let i = 0; i < this.particles.length; i++){
             const item = this.particles[i];
-            item.x = item.x - centerX_old + centerX_new;
-            item.y = item.y - centerY_old + centerY_new;
+            this.container.addChild(item.sprite);
         }
+        
     }
 }

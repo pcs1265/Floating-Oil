@@ -12,28 +12,34 @@ class Pointer{
         document.addEventListener('pointerup', this.onPointerUp.bind(this) , false);
     }
 
+    reset(density){
+        this.radius = 25 / density;
+    }
+
     onPointerMove(e) {
         this.x = e.clientX;
         this.y = e.clientY;
     }
 
     onPointerDown(e){
-        this.x = e.clientX;
-        this.y = e.clientY;
-        let closestDist = Number.MAX_SAFE_INTEGER;
-        let closestType;
-        for(let i = 0; i< this.particles.length; i++){
-            const item = this.particles[i];
-            const dx = this.x - item.x;
-            const dy = this.y - item.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if(dist < closestDist){
-                closestDist = dist;
-                closestType = item.type;
+        if(e.target.id == 'container'){
+            this.x = e.clientX;
+            this.y = e.clientY;
+            let closestDist = Number.MAX_SAFE_INTEGER;
+            let closestType;
+            for(let i = 0; i< this.particles.length; i++){
+                const item = this.particles[i];
+                const dx = this.x - item.x;
+                const dy = this.y - item.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if(dist < closestDist){
+                    closestDist = dist;
+                    closestType = item.type;
+                }
             }
+            this.type = closestType;
+            this.active = true;
         }
-        this.type = closestType;
-        this.active = true;
     }
 
     onPointerUp(e){
@@ -41,5 +47,4 @@ class Pointer{
         this.y = e.clientY;
         this.active = false;
     }
-
 }

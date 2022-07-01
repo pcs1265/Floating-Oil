@@ -11,12 +11,11 @@
     <title>Floating Oil</title>
 </head>
 
-<script src="./js/bowl.js"></script>
 <script src="./js/app.js"></script>
+<script src="./js/bowl.js"></script>
 <script src="./js/particle.js"></script>
 <script src="./js/pointer.js"></script>
 <script src="./js/visual.js"></script>
-<script src="./js/physics.js"></script>
 <script src="./js/index.js"></script>
 
 <script>
@@ -49,7 +48,7 @@
           <p class="option_title"> Viscosity : <span id="viscosity"></span> </p>
           <input type="range" class="sliders" id="viscosity_slider" min="0" max="1" step="0.05" oninput="viscosityChanged(value);">
           
-          <input type="button" class="apply_button" value="Load Changes" onclick="reload();">
+          <input type="button" class="apply_button" value="Apply Changes" onclick="applyChanges();">
           <input type="button" class="set_to_defaults_button" value="Set to Defaults" onclick="setToDefaults();">
           
           <p class="particle_counter"># of Particles : <span id="particle_indicator"></span></p> 

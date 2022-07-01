@@ -15,8 +15,6 @@ class Particle {
             this.sprite.tint = 0x0000FF;
         }
 
-        this.savedX = pos.x;
-        this.savedY = pos.y;
         this.x = pos.x;
         this.y = pos.y;
         this.sprite.x = this.x;
@@ -32,6 +30,10 @@ class Particle {
     draw(){
         this.sprite.x = this.x;
         this.sprite.y = this.y;
+    }
+
+    setSpriteSize(size){
+        this.sprite.scale.set(size);
     }
         
 }
