@@ -19,7 +19,7 @@ class Bowl {
         this.centerX = stageWidth / (2);
         this.centerY = stageHeight / (2);
         
-        this.particles.splice(0, this.particles.length);
+        this.particles.splice(0);
         let particlePos = this.dotPos(particleGap, oilRatio);
 
 
@@ -77,10 +77,6 @@ class Bowl {
             item.x = item.x - centerX_old + centerX_new;
             item.y = item.y - centerY_old + centerY_new;
         }
-    }
-
-    reset(stageWidth, stageHeight, bowlSize, oilRatio){
-
     }
 
 

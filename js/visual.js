@@ -27,7 +27,7 @@ class Visual {
             height: document.body.clientHeight,
             antialias: true,
             transparent: false,
-            resolution: window.devicePixelRatio * 2,
+            resolution: window.devicePixelRatio,
             autoDensity: true,
             powerPreference: "high-performance",
             backgroundColor: 0x202020,
@@ -41,8 +41,9 @@ class Visual {
 
     buildFilters(){
         this.blurFfilter = new PIXI.filters.BlurFilter();
-        this.blurFfilter.blur = 15 / this.density;
+        this.blurFfilter.blur = 20 / this.density;
         this.blurFfilter.autoFit = true;
+        this.blurFfilter.quality = 10;
 
         const fragSource = `
             precision mediump float;
@@ -63,7 +64,7 @@ class Visual {
 
         const uniformsData = {
             thresholdR: 0.2,
-            thresholdB: 0.2,
+            thresholdB: 0.1,
         };
 
         this.thresholdFilter = new PIXI.Filter(null, fragSource, uniformsData);
@@ -111,7 +112,7 @@ class Visual {
     reset(density){
         this.density = density;
 
-        this.blurFfilter.blur = 15 / this.density;
+        this.blurFfilter.blur = 30 / this.density;
 
         this.container.removeChildren();
         for(let i = 0; i < this.particles.length; i++){
