@@ -13,7 +13,6 @@ class Bowl {
     
     setup(stageWidth, stageHeight, bowlSize, oilRatio){
         this.radius = Math.min(stageHeight / (3), stageWidth / (3));
-        console.log(this.radius);
         this.density = (320 / this.radius) * bowlSize;
         const particleGap = 12 / this.density;
 
@@ -30,50 +29,7 @@ class Bowl {
         }
         return this.particles;
     }
-
-    buildFilters(){
-        this.blurFfilter = new PIXI.filters.BlurFilter();
-        this.blurFfilter.blur = 15 / this.density;
-        this.blurFfilter.autoFit = true;
-
-        const fragSource = `
-            precision mediump float;
-            varying vec2 vTextureCoord;
-            uniform sampler2D uSampler;
-            uniform float thresholdR;
-            uniform float thresholdB;
-
-            void main(void){
-                vec4 color = texture2D(uSampler, vTextureCoord);
-                if(color.r > thresholdR){
-                    gl_FragColor = vec4(vec3(0.9, 0.5, 0.0), 1);
-                }else if(color.b > thresholdB){
-                    gl_FragColor = vec4(vec3(0.0, 0.3, 0.5), 1);
-                }
-            }
-        `;
-
-        const uniformsData = {
-            thresholdR: 0.2,
-            thresholdB: 0.2,
-        };
-
-        this.thresholdFilter = new PIXI.Filter(null, fragSource, uniformsData);
-        this.stage.filterArea = this.renderer.screen;
-    }
-
-    enableFilters(){
-        this.stage.filters = [this.blurFfilter, this.thresholdFilter];
-        this.visual.setParticleSize(0.5);
-        this.filtersEnabled = true;
-    }
     
-    disableFilters(){
-        this.stage.filters = null;
-        this.visual.setParticleSize(0.1);
-        this.filtersEnabled = false;
-    }
-
     dotPos(density, oilRatio){
         const lowBoundX = this.radius - this.centerX;
         const highBoundX = this.radius + this.centerX;
