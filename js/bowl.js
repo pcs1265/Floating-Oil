@@ -19,7 +19,6 @@ class Bowl {
         this.centerX = stageWidth / (2);
         this.centerY = stageHeight / (2);
         
-        this.particles.splice(0);
         let particlePos = this.dotPos(particleGap, oilRatio);
 
 

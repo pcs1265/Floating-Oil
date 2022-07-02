@@ -109,7 +109,8 @@ class Visual {
     }
 
 
-    reset(density){
+    reset(density, particles){
+        this.particles = particles;
         this.density = density;
 
         this.blurFfilter.blur = 30 / this.density;

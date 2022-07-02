@@ -12,7 +12,8 @@ class Pointer{
         document.addEventListener('pointerup', this.onPointerUp.bind(this) , false);
     }
 
-    reset(density){
+    reset(density, particles){
+        this.particles = particles;
         this.radius = 25 / density;
     }
 

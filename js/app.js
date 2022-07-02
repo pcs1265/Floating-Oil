@@ -40,7 +40,7 @@ class App{
             this.visual.disableFilters();
         }
 
-        this.animate();
+        this.nextAnimation = requestAnimationFrame(this.animate.bind(this));
         window.addEventListener('resize', this.resize.bind(this), false);
         
         this.frameCounter = 0;
@@ -70,10 +70,10 @@ class App{
     }
 
     animate(){
-        requestAnimationFrame(this.animate.bind(this));
         this.bowl.simulateAll(this.pointer, this.friction);
         this.visual.draw();
         this.frameCounter++;
+        this.nextAnimation = requestAnimationFrame(this.animate.bind(this));
     }
 
     showFPS(){
@@ -82,17 +82,26 @@ class App{
     }
 
     applyChanges(){
+        cancelAnimationFrame(this.nextAnimation);
         this.friction = 0.8 - (0.2 * (this.viscosity - 0.5));
-        this.bowl.setup(this.stageWidth, this.stageHeight, this.bowlSize, this.oilRatio);
+        this.bowl = new Bowl(this.texture);
+        this.particles = this.bowl.setup(this.stageWidth, this.stageHeight, this.bowlSize, this.oilRatio);
         this.density = this.bowl.density;
-        this.pointer.reset(this.density);
-        this.visual.reset(this.density);
+        this.pointer.reset(this.density , this.particles);
+        this.visual.reset(this.density, this.particles);
+
+        // this.bowl.setup(this.stageWidth, this.stageHeight, this.bowlSize, this.oilRatio);
+        // this.density = this.bowl.density;
+        // this.pointer.reset(this.density , this.particles);
+        // this.visual.reset(this.density, this.particles);
 
         if(this.filtersEnabled){
             this.visual.enableFilters();
         }else{
             this.visual.disableFilters();
         }
+
+        this.nextAnimation = requestAnimationFrame(this.animate.bind(this));
 
     }
 }
