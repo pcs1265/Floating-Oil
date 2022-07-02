@@ -113,7 +113,7 @@ class Visual {
         this.particles = particles;
         this.density = density;
 
-        this.blurFfilter.blur = 30 / this.density;
+        this.blurFfilter.blur = 20 / this.density;
 
         this.container.removeChildren();
         for(let i = 0; i < this.particles.length; i++){
