@@ -18,7 +18,7 @@ class Bowl {
 
         this.centerX = stageWidth / (2);
         this.centerY = stageHeight / (2);
-        
+
         let particlePos = this.dotPos(particleGap, oilRatio);
 
 
@@ -49,13 +49,22 @@ class Bowl {
                     particles.push({
                         x : width,
                         y : height,
-                        type : (Math.random() < oilRatio) ? 0 : 1,
+                        type : 1,
                     });
                     totalParticles++;
                 }
             }
         }
-        
+        let total_oil = Math.round(totalParticles * oilRatio);
+        for(let i = 0; i < total_oil; i++){
+            const item = particles[Math.floor(Math.random() * particles.length)];
+            if (item.type == 0){
+                i--;
+            }else{
+                item.type = 0;
+            }
+        }
+
         document.getElementById('particle_indicator').innerHTML = totalParticles;
 
         return particles;
@@ -83,7 +92,7 @@ class Bowl {
         this.simulateFinger(pointer);
         this.simulateRepulsive();
         this.simulateBarrier();
-        this.simulateFriction(friction);
+        this.moveParticles(friction);
     }
     
     simulateFinger(pointer){
@@ -188,7 +197,7 @@ class Bowl {
         }
     }
     
-    simulateFriction(friction){
+    moveParticles(friction){
         const particlesLength = this.particles.length;
     
         for(let i = 0; i< particlesLength; i++){
